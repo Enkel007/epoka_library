@@ -1,9 +1,11 @@
 package com.enkel.library.book;
 
+import com.enkel.library.common.BaseEntity;
 import com.enkel.library.history.BookRentingHistory;
 import com.enkel.library.user.User;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.util.HashSet;
 import java.util.List;
@@ -11,17 +13,12 @@ import java.util.Set;
 
 @Getter
 @Setter
-@Builder
+@SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name = "books")
-public class Book {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "book_id")
-    private Integer id;
-
+public class Book extends BaseEntity {
     @Column(nullable = false)
     private String title;
 

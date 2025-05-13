@@ -1,20 +1,20 @@
 package com.enkel.library.history;
 
 import com.enkel.library.book.Book;
+import com.enkel.library.common.BaseEntity;
 import com.enkel.library.user.User;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
+
 
 @Getter
 @Setter
-@Builder
+@SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class BookRentingHistory {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+public class BookRentingHistory extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
