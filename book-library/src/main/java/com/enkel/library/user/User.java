@@ -1,5 +1,7 @@
 package com.enkel.library.user;
 
+import com.enkel.library.book.Book;
+import com.enkel.library.history.BookRentingHistory;
 import com.enkel.library.role.Role;
 import jakarta.persistence.*;
 import lombok.*;
@@ -13,7 +15,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Getter
@@ -27,6 +31,7 @@ import java.util.stream.Collectors;
 public class User implements UserDetails, Principal {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id")
     private Integer id;
 
     private String firstName;
@@ -45,6 +50,8 @@ public class User implements UserDetails, Principal {
     @ManyToMany(fetch = FetchType.EAGER)
     private List<Role> roles;
 
+
+
     @CreatedDate
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdDate;
@@ -52,6 +59,17 @@ public class User implements UserDetails, Principal {
     @LastModifiedDate
     @Column(insertable = false)
     private LocalDateTime lastModifiedDate;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "user_favourite_books",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "book_id")
+    )
+    private Set<Book> favouriteBooks = new HashSet<>();
+
+    @OneToMany(mappedBy = "user")
+    private List<BookRentingHistory> histories;
 
     @Override
     public String getName() {

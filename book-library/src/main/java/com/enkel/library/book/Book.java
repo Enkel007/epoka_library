@@ -1,9 +1,12 @@
 package com.enkel.library.book;
 
+import com.enkel.library.history.BookRentingHistory;
+import com.enkel.library.user.User;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -42,4 +45,10 @@ public class Book {
     @CollectionTable(name = "book_categories", joinColumns = @JoinColumn(name = "book_id"))
     @Enumerated(EnumType.STRING)
     private Set<Category> categories = new HashSet<>();
+
+    @ManyToMany(mappedBy = "favouriteBooks", fetch = FetchType.LAZY)
+    private Set<User> favoritedByUsers = new HashSet<>();
+
+    @OneToMany(mappedBy = "book")
+    private List<BookRentingHistory> histories;
 }
