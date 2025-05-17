@@ -27,7 +27,7 @@ public class Book extends BaseEntity {
 
     private String description;
     private String bookCover;
-    private Integer quantity;
+    private boolean available;
 
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE })

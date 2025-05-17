@@ -15,6 +15,7 @@ public class BookResponse {
     private Set<Author> authors;
     private String isbn;
     private String description;
+    private Set<Category> categories;
     private byte[] cover;
-    private Integer quantity;
+    private boolean available;
 }

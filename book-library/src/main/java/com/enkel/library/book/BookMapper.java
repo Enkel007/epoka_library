@@ -13,7 +13,7 @@ public class BookMapper {
                 .authors(request.authors())
                 .description(request.description())
                 .bookCover(request.bookCover())
-                .quantity(request.quantity())
+                .available(request.available())
                 .build();
     }
 
@@ -26,7 +26,7 @@ public class BookMapper {
                 .description(book.getDescription())
                 // todo implement book cover
                 //.bookCover(book.getBookCover())
-                .quantity(book.getQuantity())
+                .available(book.isAvailable())
                 .build();
     }
 

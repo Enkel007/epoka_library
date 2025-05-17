@@ -21,7 +21,8 @@ public record BookRequest(Integer id,
                           String bookCover,
                           @NotNull(message = "104")
                           @NotEmpty(message = "104")
-                          Integer quantity
+                          Set<Category> categories,
+                          boolean available
                           ){
 
 }

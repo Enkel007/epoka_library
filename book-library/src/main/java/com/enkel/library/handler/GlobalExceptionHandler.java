@@ -1,5 +1,6 @@
 package com.enkel.library.handler;
 
+import com.enkel.library.exception.OperationNotPermittedException;
 import jakarta.mail.MessagingException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -89,6 +90,16 @@ public class GlobalExceptionHandler {
                 .body(
                         ExceptionResponse.builder()
                                 .businessErrorDescription("Internal error! Please contact the admin.")
+                                .error(exception.getMessage())
+                                .build()
+                );
+    }
+
+    @ExceptionHandler(OperationNotPermittedException.class)
+    public ResponseEntity<ExceptionResponse> handleException(OperationNotPermittedException exception) {
+        return ResponseEntity.status(BAD_REQUEST)
+                .body(
+                        ExceptionResponse.builder()
                                 .error(exception.getMessage())
                                 .build()
                 );

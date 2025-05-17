@@ -14,7 +14,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -69,6 +69,23 @@ public class BookService {
         );
     }
 
+    public PageResponse<BookResponse> findAllBooksByCategory(Category category, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdDate").descending());
+        Page<Book> books = bookRepository.findAll(BookSpecification.withCategory(category), pageable);
+        List<BookResponse> bookResponse = books.stream()
+                .map(bookMapper::toBookResponse)
+                .toList();
+        return new PageResponse<>(
+                bookResponse,
+                books.getNumber(),
+                books.getSize(),
+                books.getTotalElements(),
+                books.getTotalPages(),
+                books.isFirst(),
+                books.isLast()
+        );
+    }
+
     public PageResponse<BorrowedBookResponse> findAllBorrowedBooks(int page, int size, Authentication connectedUser) {
         User user = ((User) connectedUser.getPrincipal());
         Pageable pageable = PageRequest.of(page, size, Sort.by("createdDate").descending());
@@ -87,10 +104,11 @@ public class BookService {
         );
     }
 
-    public PageResponse<BorrowedBookResponse> findAllReturnedBooks(int page, int size, Authentication connectedUser) {
-        User user = ((User) connectedUser.getPrincipal());
+    public PageResponse<BorrowedBookResponse> findAllReturnedBooks(int page, int size) {
+        // todo check if the user is an admin/librarian as only them can access this
+        // todo throw OperationNotPermittedException if the user is not an admin/librarian
         Pageable pageable = PageRequest.of(page, size, Sort.by("createdDate").descending());
-        Page<BookRentingHistory> allBorrowedBooks = bookRentingHistoryRepository.findAllReturnedBooks(pageable, user.getId());
+        Page<BookRentingHistory> allBorrowedBooks = bookRentingHistoryRepository.findAllReturnedBooks(pageable);
         List<BorrowedBookResponse> bookResponse = allBorrowedBooks.stream()
                 .map(bookMapper::toBorrowedBookResponse)
                 .toList();
@@ -103,5 +121,16 @@ public class BookService {
                 allBorrowedBooks.isFirst(),
                 allBorrowedBooks.isLast()
         );
+    }
+
+    public Integer updateAvailability(Integer bookId, Authentication connectedUser) {
+        Book book = bookRepository.findById(bookId)
+                .orElseThrow(() -> new EntityNotFoundException("Book not found"));
+        // todo check if the user is an admin/librarian as only them can access this
+        // todo throw OperationNotPermittedException if the user is not an admin/librarian
+        User user = ((User) connectedUser.getPrincipal());
+        book.setAvailable(!book.isAvailable());
+        bookRepository.save(book);
+        return bookId;
     }
 }

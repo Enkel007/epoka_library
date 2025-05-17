@@ -10,4 +10,10 @@ public class BookSpecification {
             return criteriaBuilder.equal(authorJoin.get("author").get("id"), authorId);
         };
     }
+
+    public static Specification<Book> withCategory(Category category) {
+        return (root, query, criteriaBuilder) -> {
+            return criteriaBuilder.isMember(category, root.get("category"));
+        };
+    }
 }

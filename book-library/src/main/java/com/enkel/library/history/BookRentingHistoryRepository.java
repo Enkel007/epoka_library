@@ -18,5 +18,5 @@ public interface BookRentingHistoryRepository extends JpaRepository<BookRentingH
             FROM BookRentingHistory history
             WHERE history.returned = true
             """)
-    Page<BookRentingHistory> findAllReturnedBooks(Pageable pageable, Integer userId);
+    Page<BookRentingHistory> findAllReturnedBooks(Pageable pageable);
 }

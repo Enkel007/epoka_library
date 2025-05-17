@@ -42,6 +42,20 @@ public class BookController {
         return ResponseEntity.ok(service.findAllBooksByAuthor(page, size, authorId));
     }
 
+    @GetMapping("/category/{category-name}")
+    public ResponseEntity<PageResponse<BookResponse>> findAllBooksByCategory(
+            @PathVariable("category-name") String categoryName,
+            @RequestParam(name = "page", defaultValue = "0", required = false) int page,
+            @RequestParam(name = "size", defaultValue = "0", required = false) int size
+    ){
+       try {
+           Category category = Category.valueOf(categoryName.toUpperCase().replace("-", "_"));
+           return ResponseEntity.ok(service.findAllBooksByCategory(category, page, size));
+       } catch (IllegalArgumentException e) {
+           return ResponseEntity.badRequest().build();
+       }
+    }
+
     @GetMapping("/borrowed")
     public ResponseEntity<PageResponse<BorrowedBookResponse>> findAllBorrowedBooks(
             @RequestParam(name = "page", defaultValue = "0", required = false) int page,
@@ -54,9 +68,16 @@ public class BookController {
     @GetMapping("/returned")
     public ResponseEntity<PageResponse<BorrowedBookResponse>> findAllReturnedBooks(
             @RequestParam(name = "page", defaultValue = "0", required = false) int page,
-            @RequestParam(name = "size", defaultValue = "0", required = false) int size,
+            @RequestParam(name = "size", defaultValue = "0", required = false) int size
+    ){
+        return ResponseEntity.ok(service.findAllReturnedBooks(page, size));
+    }
+
+    @PatchMapping("/available/{book-id}")
+    public ResponseEntity<Integer> updateAvailability(
+            @PathVariable ("book-id") Integer bookId,
             Authentication connectedUser
     ){
-        return ResponseEntity.ok(service.findAllReturnedBooks(page, size, connectedUser));
+        return ResponseEntity.ok(service.updateAvailability(bookId, connectedUser));
     }
 }
