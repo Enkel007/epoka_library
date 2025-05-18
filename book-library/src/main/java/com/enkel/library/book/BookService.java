@@ -1,6 +1,7 @@
 package com.enkel.library.book;
 
 import com.enkel.library.common.PageResponse;
+import com.enkel.library.exception.OperationNotPermittedException;
 import com.enkel.library.history.BookRentingHistory;
 import com.enkel.library.history.BookRentingHistoryRepository;
 import com.enkel.library.user.User;
@@ -132,5 +133,52 @@ public class BookService {
         book.setAvailable(!book.isAvailable());
         bookRepository.save(book);
         return bookId;
+    }
+
+    public Integer borrowBook(Integer bookId, Authentication connectedUser) {
+        Book book = bookRepository.findById(bookId)
+                .orElseThrow(() -> new EntityNotFoundException("Book not found"));
+        if(!book.isAvailable()){
+            throw new OperationNotPermittedException("The requested book cannot be borrowed as it is not currently available");
+        }
+        User user = ((User) connectedUser.getPrincipal());
+        final boolean isAlreadyBorrowed = bookRentingHistoryRepository.isAlreadyBorrowedByUser(bookId, user.getId());
+        if (isAlreadyBorrowed) {
+            throw new OperationNotPermittedException("The requested book is already borrowed.");
+        }
+        BookRentingHistory bookRentingHistory = BookRentingHistory.builder()
+                .user(user)
+                .book(book)
+                .returned(false)
+                .returnApproved(false)
+                .build();
+        return bookRentingHistoryRepository.save(bookRentingHistory).getId();
+    }
+
+    public Integer returnBorrowedBook(Integer bookId, Authentication connectedUser) {
+        Book book = bookRepository.findById(bookId)
+                .orElseThrow(() -> new EntityNotFoundException("Book not found"));
+        if(!book.isAvailable()){
+            throw new OperationNotPermittedException("The requested book cannot be borrowed as it is not currently available");
+        }
+        User user = ((User) connectedUser.getPrincipal());
+        BookRentingHistory bookRentingHistory = bookRentingHistoryRepository.findByBookIdAndUserId(bookId, user.getId())
+                .orElseThrow(() -> new OperationNotPermittedException("You did not borrow this book!"));
+        bookRentingHistory.setReturned(true);
+        return bookRentingHistoryRepository.save(bookRentingHistory).getId();
+    }
+
+
+    public Integer approveReturnedBorrowedBook(Integer bookId, Authentication connectedUser) {
+        Book book = bookRepository.findById(bookId)
+                .orElseThrow(() -> new EntityNotFoundException("Book not found"));
+        if(!book.isAvailable()){
+            throw new OperationNotPermittedException("The requested book cannot be borrowed as it is not currently available");
+        }
+        User user = ((User) connectedUser.getPrincipal());
+        BookRentingHistory bookRentingHistory = bookRentingHistoryRepository.findByBookIdAndLibrarianId(bookId, user.getId())
+                .orElseThrow(() -> new OperationNotPermittedException("The book has not been returned yet! You cannot approve the return."));
+        bookRentingHistory.setReturnApproved(true);
+        return bookRentingHistoryRepository.save(bookRentingHistory).getId();
     }
 }
