@@ -1,12 +1,14 @@
 package com.enkel.library.book;
 
 import com.enkel.library.common.PageResponse;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("books")
@@ -56,6 +58,29 @@ public class BookController {
        }
     }
 
+    @GetMapping("/favourites")
+    public ResponseEntity<PageResponse<BookResponse>> findFavouriteBooksByUser(
+            @RequestParam(name = "page", defaultValue = "0", required = false) int page,
+            @RequestParam(name = "size", defaultValue = "0", required = false) int size,
+            Authentication connectedUser
+    ){
+        return ResponseEntity.ok(service.findFavouriteBooksByUser(page, size, connectedUser));
+    }
+
+    @PostMapping("/favourites/{book-id}")
+    public ResponseEntity<Integer> addBookToFavourites(@PathVariable("book-id") Integer bookId,
+                                                       Authentication connectedUser
+    ){
+        return ResponseEntity.ok(service.addBookToFavourites(bookId, connectedUser));
+    }
+
+    @DeleteMapping("/favourites/{book-id}")
+    public ResponseEntity<Integer> removeBookFromFavourites(@PathVariable("book-id") Integer bookId,
+                                                       Authentication connectedUser
+    ){
+        return ResponseEntity.ok(service.removeBookFromFavourites(bookId, connectedUser));
+    }
+
     @GetMapping("/borrowed")
     public ResponseEntity<PageResponse<BorrowedBookResponse>> findAllBorrowedBooks(
             @RequestParam(name = "page", defaultValue = "0", required = false) int page,
@@ -96,5 +121,16 @@ public class BookController {
     public ResponseEntity<Integer> approveReturnedBorrowedBook(
             @PathVariable("book-id") Integer bookId, Authentication connectedUser) {
         return ResponseEntity.ok(service.approveReturnedBorrowedBook(bookId, connectedUser));
+    }
+
+    @PostMapping(value = "/cover/{book-id}", consumes = "multipart/form-data")
+    public ResponseEntity<?> uploadBookCoverPicture(
+            @PathVariable ("book-id") Integer bookId,
+            @Parameter()
+            @RequestPart("file") MultipartFile file,
+            Authentication connectedUser
+    ){
+        service.uploadBookCoverPicture(file, connectedUser, bookId);
+        return ResponseEntity.accepted().build();
     }
 }

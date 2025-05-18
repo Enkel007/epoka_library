@@ -1,5 +1,6 @@
 package com.enkel.library.book;
 
+import com.enkel.library.file.FileUtils;
 import com.enkel.library.history.BookRentingHistory;
 import org.springframework.stereotype.Service;
 
@@ -24,8 +25,7 @@ public class BookMapper {
                 .isbn(book.getIsbn())
                 .authors(book.getAuthors())
                 .description(book.getDescription())
-                // todo implement book cover
-                //.bookCover(book.getBookCover())
+                .cover(FileUtils.readFileFromLocation(book.getBookCover()))
                 .available(book.isAvailable())
                 .build();
     }

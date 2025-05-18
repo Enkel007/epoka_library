@@ -2,9 +2,11 @@ package com.enkel.library.book;
 
 import com.enkel.library.common.PageResponse;
 import com.enkel.library.exception.OperationNotPermittedException;
+import com.enkel.library.file.FileStorageService;
 import com.enkel.library.history.BookRentingHistory;
 import com.enkel.library.history.BookRentingHistoryRepository;
 import com.enkel.library.user.User;
+import com.enkel.library.user.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -13,6 +15,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Objects;
@@ -23,6 +27,8 @@ public class BookService {
     private final BookRepository bookRepository;
     private final BookMapper bookMapper;
     private final BookRentingHistoryRepository bookRentingHistoryRepository;
+    private final FileStorageService fileStorageService;
+    private final UserRepository userRepository;
 
     public Integer save( BookRequest request, Authentication connectedUser) {
         User user = ((User) connectedUser.getPrincipal());
@@ -85,6 +91,44 @@ public class BookService {
                 books.isFirst(),
                 books.isLast()
         );
+    }
+
+    public PageResponse<BookResponse> findFavouriteBooksByUser(int page, int size, Authentication connectedUser) {
+        User user = ((User) connectedUser.getPrincipal());
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdDate").descending());
+        Page<Book> favouriteBooksPage = bookRepository.findAllFavouritedByUserId(user.getId(), pageable);
+        List<BookResponse> bookResponse = favouriteBooksPage.stream()
+                .map(bookMapper::toBookResponse)
+                .toList();
+        return new PageResponse<>(
+                bookResponse,
+                favouriteBooksPage.getNumber(),
+                favouriteBooksPage.getSize(),
+                favouriteBooksPage.getTotalElements(),
+                favouriteBooksPage.getTotalPages(),
+                favouriteBooksPage.isFirst(),
+                favouriteBooksPage.isLast()
+        );
+    }
+
+    @Transactional
+    public Integer addBookToFavourites(Integer bookId, Authentication connectedUser) {
+        Book book = bookRepository.findById(bookId)
+                .orElseThrow(() -> new EntityNotFoundException("Book not found"));
+        User user = ((User) connectedUser.getPrincipal());
+        user.getFavouriteBooks().add(book);
+        userRepository.save(user);
+        return bookId;
+    }
+
+    @Transactional
+    public Integer removeBookFromFavourites(Integer bookId, Authentication connectedUser) {
+        Book book = bookRepository.findById(bookId)
+                .orElseThrow(() -> new EntityNotFoundException("Book not found"));
+        User user = ((User) connectedUser.getPrincipal());
+        user.getFavouriteBooks().remove(book);
+        userRepository.save(user);
+        return bookId;
     }
 
     public PageResponse<BorrowedBookResponse> findAllBorrowedBooks(int page, int size, Authentication connectedUser) {
@@ -180,5 +224,14 @@ public class BookService {
                 .orElseThrow(() -> new OperationNotPermittedException("The book has not been returned yet! You cannot approve the return."));
         bookRentingHistory.setReturnApproved(true);
         return bookRentingHistoryRepository.save(bookRentingHistory).getId();
+    }
+
+    public void uploadBookCoverPicture(MultipartFile file, Authentication connectedUser, Integer bookId) {
+        Book book = bookRepository.findById(bookId)
+                .orElseThrow(() -> new EntityNotFoundException("Book not found"));
+        User user = ((User) connectedUser.getPrincipal());
+        var bookCover = fileStorageService.saveFile(file, user.getId());
+        book.setBookCover(bookCover);
+        bookRepository.save(book);
     }
 }

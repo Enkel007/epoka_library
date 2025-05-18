@@ -44,7 +44,7 @@ public class Book extends BaseEntity {
     private Set<Category> categories = new HashSet<>();
 
     @ManyToMany(mappedBy = "favouriteBooks", fetch = FetchType.LAZY)
-    private Set<User> favoritedByUsers = new HashSet<>();
+    private Set<User> favouritedByUsers = new HashSet<>();
 
     @OneToMany(mappedBy = "book")
     private List<BookRentingHistory> histories;
