@@ -1,5 +1,6 @@
 package com.enkel.library.book;
 
+import com.enkel.library.author.Author;
 import jakarta.persistence.criteria.Join;
 import org.springframework.data.jpa.domain.Specification;
 

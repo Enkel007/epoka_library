@@ -1,5 +1,6 @@
-package com.enkel.library.book;
+package com.enkel.library.author;
 
+import com.enkel.library.book.Book;
 import jakarta.persistence.*;
 import lombok.*;
 

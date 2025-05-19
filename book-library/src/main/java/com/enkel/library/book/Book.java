@@ -1,5 +1,6 @@
 package com.enkel.library.book;
 
+import com.enkel.library.author.Author;
 import com.enkel.library.common.BaseEntity;
 import com.enkel.library.history.BookRentingHistory;
 import com.enkel.library.user.User;

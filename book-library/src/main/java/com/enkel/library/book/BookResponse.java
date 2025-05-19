@@ -1,5 +1,6 @@
 package com.enkel.library.book;
 
+import com.enkel.library.author.Author;
 import lombok.*;
 
 import java.util.Set;
