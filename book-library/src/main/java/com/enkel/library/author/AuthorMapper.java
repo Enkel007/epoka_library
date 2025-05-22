@@ -12,6 +12,7 @@ public class AuthorMapper {
                 .id(request.id())
                 .firstName(request.firstName())
                 .lastName(request.lastName())
+                .books(request.books())
                 .build();
     }
 
