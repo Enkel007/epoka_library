@@ -31,7 +31,6 @@ import java.util.stream.Collectors;
 public class User implements UserDetails, Principal {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")
     private Integer id;
 
     private String firstName;
@@ -49,8 +48,6 @@ public class User implements UserDetails, Principal {
 
     @ManyToMany(fetch = FetchType.EAGER)
     private List<Role> roles;
-
-
 
     @CreatedDate
     @Column(nullable = false, updatable = false)

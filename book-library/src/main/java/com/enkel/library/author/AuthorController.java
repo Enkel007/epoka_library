@@ -25,10 +25,9 @@ public class AuthorController {
     @PostMapping("/{author-id}/books/{book-id}")
     public ResponseEntity<Void> associateAuthorWithBook(
             @PathVariable("author-id") Integer authorId,
-            @PathVariable("book-id") Integer bookId,
-            Authentication connectedUser
+            @PathVariable("book-id") Integer bookId
     ){
-        service.associateAuthorWithBook(authorId, bookId, connectedUser);
+        service.associateAuthorWithBook(authorId, bookId);
         return ResponseEntity.ok().build();
     }
 
