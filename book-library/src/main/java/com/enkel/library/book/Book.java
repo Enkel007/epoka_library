@@ -4,6 +4,7 @@ import com.enkel.library.author.Author;
 import com.enkel.library.common.BaseEntity;
 import com.enkel.library.history.BookRentingHistory;
 import com.enkel.library.user.User;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -37,6 +38,7 @@ public class Book extends BaseEntity {
             joinColumns = @JoinColumn(name = "book_id"),
             inverseJoinColumns = @JoinColumn(name = "author_id")
     )
+    @JsonBackReference
     private Set<Author> authors = new HashSet<>();
 
     @ElementCollection(targetClass = Category.class, fetch = FetchType.LAZY)
