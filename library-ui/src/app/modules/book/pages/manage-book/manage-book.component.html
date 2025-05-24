@@ -1,1 +1,56 @@
-<p>manage-book works!</p>
+<div class="p-2">
+    <h2>Manage book</h2>
+    <hr>
+    <div class="alert alert-danger mt-2" role="alert" *ngIf="errorMsg.length">
+        <p class="p-0 m-0" *ngFor="let msg of errorMsg">{{ msg }}</p>
+    </div>
+    <div class="d-flex gap-2">
+        <div class="col-3">
+            <img class="rounded-1" width="100%" height="100%" 
+                [src]="selectedPicture || 'https://www.au-ibar.org/sites/default/files/default_images/no-cover.jpg'"
+                alt="..."
+            >
+            <div class="mt-2">
+                <input 
+                    (change)="onFileSelected($event)"
+                    class="form-control"
+                    type="file"
+                    id="formFile"
+                    accept="image/*"
+                >
+            </div>
+        </div>
+        <div class="col-9">
+            <form class="row g-3">
+                <div class="col-12">
+                    <label for="title" class="form-label">Title</label>
+                    <input [(ngModel)]="bookRequest.title" type="text" class="form-control" id="title" placeholder="Title">
+                </div>
+                <div class="col-6">
+                    <label for="Authors" class="form-label">Authors</label>
+                    <input [(ngModel)]="bookRequest.authors" type="text" class="form-control" id="Authors" placeholder="Authors">
+                </div>
+                <div class="col-6">
+                    <label for="isbn" class="form-label">ISBN</label>
+                    <input [(ngModel)]="bookRequest.isbn" type="text" class="form-control" id="isbn" placeholder="ISBN">
+                </div>
+                <div class="col-12">
+                    <label for="description" class="form-label">Description</label>
+                    <textarea [(ngModel)]="bookRequest.description" rows="4" class="form-control" id="description" placeholder="Book description"></textarea>
+                </div>
+                <div class="col-12">
+                    <label for="categories" class="form-label">Categories</label>
+                    <input [(ngModel)]="bookRequest.categories" rows="4" class="form-control" id="categories" placeholder="Categories">
+                </div>
+                <div class="d-flex justify-content-end gap-2 col-12">
+                    <button (click)="saveBook()" type="submit" class="btn btn-outline-primary">
+                        <i class="fas fa-save"></i>&nbsp;Save
+                    </button>
+                    <a routerLink="/books" class="btn btn-link text-danger">
+                        <i class="fas fa-times"></i>&nbsp;Cancel
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

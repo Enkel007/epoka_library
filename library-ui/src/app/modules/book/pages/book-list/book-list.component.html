@@ -8,6 +8,11 @@
     {{ message }}
 </div>
 <hr>
+<div class="d-flex justify-content-end mb-3">
+    <a routerLink="/books/manage" class="btn btn-outline-primary">
+        <i class="fas fa-plus"></i>&nbsp;New Book
+    </a>
+</div>
 <div class="d-flex justify-content-start gap-2 flex-wrap">
     <app-book-card 
       *ngFor="let book of bookResponse.content"
