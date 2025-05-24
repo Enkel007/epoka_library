@@ -2,7 +2,7 @@
     <img height="200" [src]="bookCover" class="card-img-top" alt="...">
     <div class="card-body overflow-scroll">
         <h5 class="card-title fs-6 text-nowrap fw-bold mb-1">{{ book.title }}</h5>
-        <h5 class="card-subtitle fs-6 text-secondary mb-1">{{ authorDisplayNames }}</h5>
+        <h5 class="card-subtitle fs-6 text-secondary mb-1">{{ book.author }}</h5>
         <h6 class="card-subtitle fs-6 text-secondary mb-1">{{ book.isbn }}</h6>
         <div *ngIf="categoryDisplayNames" class="mt-2 category-container">
             <ng-container *ngFor="let category of book.categories">

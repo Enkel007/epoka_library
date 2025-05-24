@@ -1,6 +1,6 @@
 package com.enkel.library.book;
 
-import com.enkel.library.author.Author;
+
 import com.enkel.library.common.BaseEntity;
 import com.enkel.library.history.BookRentingHistory;
 import com.enkel.library.user.User;
@@ -38,13 +38,13 @@ public class Book extends BaseEntity {
     private boolean available;
 
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-    @JoinTable(
-            name = "book_author",
-            joinColumns = @JoinColumn(name = "book_id"),
-            inverseJoinColumns = @JoinColumn(name = "author_id")
-    )
-    private Set<Author> authors = new HashSet<>();
+//    @ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+//    @JoinTable(
+//            name = "book_author",
+//            joinColumns = @JoinColumn(name = "book_id"),
+//            inverseJoinColumns = @JoinColumn(name = "author_id")
+//    )
+    private String author;
 
     @ElementCollection(targetClass = Category.class, fetch = FetchType.LAZY)
     @CollectionTable(name = "book_categories", joinColumns = @JoinColumn(name = "book_id"))

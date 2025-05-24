@@ -59,22 +59,22 @@ public class BookService {
         );
     }
 
-    public PageResponse<BookResponse> findAllBooksByAuthor(Integer authorId, int page, int size) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by("createdDate").descending());
-        Page<Book> books = bookRepository.findAll(BookSpecification.withAuthorId(authorId), pageable);
-        List<BookResponse> bookResponse = books.stream()
-                .map(bookMapper::toBookResponse)
-                .toList();
-        return new PageResponse<>(
-                bookResponse,
-                books.getNumber(),
-                books.getSize(),
-                books.getTotalElements(),
-                books.getTotalPages(),
-                books.isFirst(),
-                books.isLast()
-        );
-    }
+//    public PageResponse<BookResponse> findAllBooksByAuthor(Integer authorId, int page, int size) {
+//        Pageable pageable = PageRequest.of(page, size, Sort.by("createdDate").descending());
+//        Page<Book> books = bookRepository.findAll(BookSpecification.withAuthorId(authorId), pageable);
+//        List<BookResponse> bookResponse = books.stream()
+//                .map(bookMapper::toBookResponse)
+//                .toList();
+//        return new PageResponse<>(
+//                bookResponse,
+//                books.getNumber(),
+//                books.getSize(),
+//                books.getTotalElements(),
+//                books.getTotalPages(),
+//                books.isFirst(),
+//                books.isLast()
+//        );
+//    }
 
     public PageResponse<BookResponse> findAllBooksByCategory(Category category, int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("createdDate").descending());

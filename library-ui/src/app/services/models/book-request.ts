@@ -4,7 +4,7 @@
 
 import { Author } from '../models/author';
 export interface BookRequest {
-  authors: Array<Author>;
+  author: string;
   available?: boolean;
   bookCover?: string;
   categories: Array<'FICTION' | 'NON_FICTION' | 'SCIENCE_FICTION' | 'FANTASY' | 'MYSTERY' | 'THRILLER' | 'ROMANCE' | 'HORROR' | 'HISTORICAL_FICTION' | 'COMICS' | 'GRAPHIC_NOVEL' | 'BIOGRAPHY' | 'AUTOBIOGRAPHY' | 'SELF_HELP' | 'BUSINESS' | 'COOKING' | 'ART' | 'TRAVEL' | 'HISTORY' | 'SCIENCE' | 'POETRY' | 'DRAMA' | 'ACADEMIC' | 'REFERENCE' | 'CHILDREN' | 'YOUNG_ADULT' | 'MATURE_AUDIENCE'>;

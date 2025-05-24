@@ -35,17 +35,7 @@ export class BookCardComponent {
     }
     return 'https://www.au-ibar.org/sites/default/files/default_images/no-cover.jpg';
   }
-
-  get authorDisplayNames(): string {
-    if (!this.book || !this.book.authors || this.book.authors.length === 0) {
-      return '';
-    }
-    return this.book.authors
-      .map((author: any) => `${author.firstName || ''} ${author.lastName || ''}`.trim())
-      .filter((name: string) => name.length > 0)
-      .join(', ');
-  }
-
+  
   get categoryDisplayNames(): string{
     if(!this.book || !this.book.categories || this.book.categories.length == 0){
       return '';

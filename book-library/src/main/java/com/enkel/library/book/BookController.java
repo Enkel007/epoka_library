@@ -35,14 +35,14 @@ public class BookController {
         return ResponseEntity.ok(service.findAllBooks(page, size));
     }
 
-    @GetMapping("/author/{author-id}")
-    public ResponseEntity<PageResponse<BookResponse>> findAllBooksByAuthor(
-            @PathVariable("author-id") Integer authorId,
-            @RequestParam(name = "page", defaultValue = "0", required = false) int page,
-            @RequestParam(name = "size", defaultValue = "0", required = false) int size
-    ){
-        return ResponseEntity.ok(service.findAllBooksByAuthor(page, size, authorId));
-    }
+//    @GetMapping("/author/{author-id}")
+//    public ResponseEntity<PageResponse<BookResponse>> findAllBooksByAuthor(
+//            @PathVariable("author-id") Integer authorId,
+//            @RequestParam(name = "page", defaultValue = "0", required = false) int page,
+//            @RequestParam(name = "size", defaultValue = "0", required = false) int size
+//    ){
+//        return ResponseEntity.ok(service.findAllBooksByAuthor(page, size, authorId));
+//    }
 
     @GetMapping("/category/{category-name}")
     public ResponseEntity<PageResponse<BookResponse>> findAllBooksByCategory(

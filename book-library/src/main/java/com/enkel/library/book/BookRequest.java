@@ -1,6 +1,6 @@
 package com.enkel.library.book;
 
-import com.enkel.library.author.Author;
+
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
@@ -14,7 +14,7 @@ public record BookRequest(Integer id,
 
                           @NotNull(message = "101")
                           @NotEmpty(message = "101")
-                          Set<Author> authors,
+                          String author,
 
                           @NotNull(message = "102")
                           @NotEmpty(message = "102")

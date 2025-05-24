@@ -4,7 +4,7 @@
 
 import { Author } from '../models/author';
 export interface BookResponse {
-  authors?: Array<Author>;
+  author?: string;
   available?: boolean;
   categories?: Array<string | Category>;
   cover?: string;

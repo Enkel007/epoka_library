@@ -1,6 +1,6 @@
 package com.enkel.library.book;
 
-import com.enkel.library.author.Author;
+
 import lombok.*;
 
 import java.util.Set;
@@ -13,7 +13,7 @@ import java.util.Set;
 public class BorrowedBookResponse {
     private Integer id;
     private String title;
-    private Set<Author> authors;
+    private String author;
     private String isbn;
     private boolean returned;
     private boolean returnApproved;

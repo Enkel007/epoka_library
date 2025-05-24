@@ -21,7 +21,7 @@ const categoryValues = [
 })
 export class ManageBookComponent implements OnInit { // Implement OnInit
   bookRequest: BookRequest = {
-    authors: [], // Assuming authors will be handled differently, perhaps another input or select
+    author: '', // Assuming authors will be handled differently, perhaps another input or select
     categories: [], // Initialize as an empty array for multi-select
     description: '',
     isbn: '',
