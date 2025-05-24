@@ -27,6 +27,11 @@ public class BookController {
         return ResponseEntity.ok(service.findById(bookId));
     }
 
+    @DeleteMapping("{book-id}")
+    public ResponseEntity<BookResponse> deleteBook(@PathVariable("book-id") Integer bookId) {
+        return ResponseEntity.ok(service.deleteById(bookId));
+    }
+
     @GetMapping
     public ResponseEntity<PageResponse<BookResponse>> findAllBooks(
             @RequestParam(name = "page", defaultValue = "0", required = false) int page,
@@ -34,15 +39,6 @@ public class BookController {
     ) {
         return ResponseEntity.ok(service.findAllBooks(page, size));
     }
-
-//    @GetMapping("/author/{author-id}")
-//    public ResponseEntity<PageResponse<BookResponse>> findAllBooksByAuthor(
-//            @PathVariable("author-id") Integer authorId,
-//            @RequestParam(name = "page", defaultValue = "0", required = false) int page,
-//            @RequestParam(name = "size", defaultValue = "0", required = false) int size
-//    ){
-//        return ResponseEntity.ok(service.findAllBooksByAuthor(page, size, authorId));
-//    }
 
     @GetMapping("/category/{category-name}")
     public ResponseEntity<PageResponse<BookResponse>> findAllBooksByCategory(

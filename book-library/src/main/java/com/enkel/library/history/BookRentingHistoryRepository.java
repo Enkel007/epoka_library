@@ -5,6 +5,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface BookRentingHistoryRepository extends JpaRepository<BookRentingHistory, Integer> {
@@ -51,4 +52,13 @@ public interface BookRentingHistoryRepository extends JpaRepository<BookRentingH
            AND transaction.returnApproved = false
           """)
     Optional<BookRentingHistory> findByBookIdAndLibrarianId(Integer bookId, Integer librarianId);
+
+    @Query("""
+            SELECT transaction
+            FROM BookRentingHistory transaction
+            WHERE transaction.book.id = :bookId
+            AND transaction.returned = false
+            AND transaction.returnApproved = false
+            """)
+    List<BookRentingHistory> findByBookIdAndReturnedApprovedFalseAndReturnedFalse(Integer bookId);
 }

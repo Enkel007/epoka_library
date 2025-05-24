@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core'; // Import OnInit
-import { BookRequest } from '../../../../services/models';
+import { BookRequest, BookResponse } from '../../../../services/models';
 import { BookService } from '../../../../services/services/book.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 // Manually define an array based on your Category enum for use in the template
 // This ensures the values match your backend enum exactly.
@@ -26,7 +26,7 @@ export class ManageBookComponent implements OnInit { // Implement OnInit
     description: '',
     isbn: '',
     title: '',
-    // available: true, // You might want to initialize 'available' if it's part of BookRequest
+    available: true,
   };
   errorMsg: Array<string> = [];
   selectedBookCover: any;
@@ -37,13 +37,32 @@ export class ManageBookComponent implements OnInit { // Implement OnInit
 
   constructor(
     private bookService: BookService,
-    private router: Router
+    private router: Router,
+    private activatedRoute: ActivatedRoute
   ){}
 
   ngOnInit(): void {
-    // If you are editing a book, you would fetch the book data here
-    // and populate bookRequest, including bookRequest.categories.
-    // For a new book, categories will be an empty array.
+    const bookId = this.activatedRoute.snapshot.params['bookId'];
+    if(bookId){
+      this.bookService.findBookById({
+        'book-id': bookId
+      }).subscribe({
+        next: (book: BookResponse) => {
+          this.bookRequest = {
+            id: book.id,
+            title: book.title as string,
+            author: book.author as string,
+            isbn: book.isbn as string,
+            description: book.description as string,
+            categories: book.categories as Array<'FICTION' | 'NON_FICTION' | 'SCIENCE_FICTION' | 'FANTASY' | 'MYSTERY' | 'THRILLER' | 'ROMANCE' | 'HORROR' | 'HISTORICAL_FICTION' | 'COMICS' | 'GRAPHIC_NOVEL' | 'BIOGRAPHY' | 'AUTOBIOGRAPHY' | 'SELF_HELP' | 'BUSINESS' | 'COOKING' | 'ART' | 'TRAVEL' | 'HISTORY' | 'SCIENCE' | 'POETRY' | 'DRAMA' | 'ACADEMIC' | 'REFERENCE' | 'CHILDREN' | 'YOUNG_ADULT' | 'MATURE_AUDIENCE'>,
+            available: book.available
+          }
+          if(book.cover){
+            this.selectedPicture = 'data:image/jpg;base64,' + book.cover;
+          }
+        }
+      })
+    }
   }
 
   onFileSelected(event: any) {

@@ -1,4 +1,4 @@
-<div class="card" style="width: 20rem;">
+<div class="card" style="width: 20rem;" [class.border-warning]="!book.available">
     <img height="200" [src]="bookCover" class="card-img-top" alt="...">
     <div class="card-body overflow-scroll">
         <h5 class="card-title fs-6 text-nowrap fw-bold mb-1">{{ book.title }}</h5>

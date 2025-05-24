@@ -85,4 +85,14 @@ export class BookListComponent implements OnInit {
       } 
     });
   }
+
+  editBook(book: BookResponse) {
+    this.router.navigate(['books', 'manage', book.id]);
+  }
+
+  // deleteBook(book: BookResponse) {
+  //  this.bookService.deleteBook({
+
+  //  })
+  // }
 }

@@ -131,6 +131,20 @@ public class BookService {
         return bookId;
     }
 
+    @Transactional
+    public BookResponse deleteById(Integer bookId) {
+        Book book = bookRepository.findById(bookId)
+                .orElseThrow(() -> new EntityNotFoundException("Book not found"));
+        List<BookRentingHistory> activeBorrows = bookRentingHistoryRepository.findByBookIdAndReturnedApprovedFalseAndReturnedFalse(bookId);
+        if(!activeBorrows.isEmpty()) {
+            throw new OperationNotPermittedException("Cannot delete book currently borrowed by user.");
+        }
+        if(book.getBookCover() != null && !book.getBookCover().isEmpty()){
+            bookRepository.delete(book);
+        }
+        return bookMapper.toBookResponse(book);
+    }
+
     public PageResponse<BorrowedBookResponse> findAllBorrowedBooks(int page, int size, Authentication connectedUser) {
         User user = ((User) connectedUser.getPrincipal());
         Pageable pageable = PageRequest.of(page, size, Sort.by("createdDate").descending());
