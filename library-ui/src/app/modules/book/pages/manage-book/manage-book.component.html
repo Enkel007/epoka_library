@@ -6,9 +6,9 @@
     </div>
     <div class="d-flex gap-2">
         <div class="col-3">
-            <img class="rounded-1" width="100%" height="100%" 
+            <img class="rounded-1" width="100%" height="auto" 
                 [src]="selectedPicture || 'https://www.au-ibar.org/sites/default/files/default_images/no-cover.jpg'"
-                alt="..."
+                alt="Book Cover Preview"
             >
             <div class="mt-2">
                 <input 
@@ -21,29 +21,43 @@
             </div>
         </div>
         <div class="col-9">
-            <form class="row g-3">
+            <form class="row g-3" #bookForm="ngForm">
                 <div class="col-12">
                     <label for="title" class="form-label">Title</label>
-                    <input [(ngModel)]="bookRequest.title" type="text" class="form-control" id="title" placeholder="Title">
+                    <input [(ngModel)]="bookRequest.title" name="title" type="text" class="form-control" id="title" placeholder="Title" required>
                 </div>
                 <div class="col-6">
-                    <label for="Authors" class="form-label">Authors</label>
-                    <input [(ngModel)]="bookRequest.authors" type="text" class="form-control" id="Authors" placeholder="Authors">
+                    <label for="authors" class="form-label">Authors</label>
+                    <!-- Assuming authors are input as comma-separated strings or you have a more complex component for authors -->
+                    <!-- For simplicity, keeping as text. If authors are objects, this needs adjustment -->
+                    <input [(ngModel)]="bookRequest.authors" name="authors" type="text" class="form-control" id="authors" placeholder="Author1, Author2">
                 </div>
                 <div class="col-6">
                     <label for="isbn" class="form-label">ISBN</label>
-                    <input [(ngModel)]="bookRequest.isbn" type="text" class="form-control" id="isbn" placeholder="ISBN">
+                    <input [(ngModel)]="bookRequest.isbn" name="isbn" type="text" class="form-control" id="isbn" placeholder="ISBN" required>
                 </div>
                 <div class="col-12">
                     <label for="description" class="form-label">Description</label>
-                    <textarea [(ngModel)]="bookRequest.description" rows="4" class="form-control" id="description" placeholder="Book description"></textarea>
+                    <textarea [(ngModel)]="bookRequest.description" name="description" rows="4" class="form-control" id="description" placeholder="Book description" required></textarea>
                 </div>
                 <div class="col-12">
                     <label for="categories" class="form-label">Categories</label>
-                    <input [(ngModel)]="bookRequest.categories" rows="4" class="form-control" id="categories" placeholder="Categories">
+                    <select 
+                        [(ngModel)]="bookRequest.categories" 
+                        name="categories" 
+                        class="form-control form-select" 
+                        id="categories" 
+                        multiple 
+                        required>
+                        <option *ngFor="let category of allCategories" [value]="category">
+                            {{ category | titlecase }} <!-- Displaying categories in Title Case for readability -->
+                        </option>
+                    </select>
+                    <!-- Add a small note for multi-select usability -->
+                    <small class="form-text text-muted">Hold Ctrl (or Cmd on Mac) to select multiple categories.</small>
                 </div>
-                <div class="d-flex justify-content-end gap-2 col-12">
-                    <button (click)="saveBook()" type="submit" class="btn btn-outline-primary">
+                <div class="d-flex justify-content-end gap-2 col-12 mt-3">
+                    <button (click)="saveBook()" type="submit" class="btn btn-outline-primary" [disabled]="!bookForm.form.valid">
                         <i class="fas fa-save"></i>&nbsp;Save
                     </button>
                     <a routerLink="/books" class="btn btn-link text-danger">
