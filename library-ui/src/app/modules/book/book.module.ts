@@ -6,6 +6,8 @@ import { MainComponent } from './pages/main/main.component';
 import { MenuComponent } from './components/menu/menu.component';
 import { BookListComponent } from './pages/book-list/book-list.component';
 import { BookCardComponent } from './components/book-card/book-card.component';
+import { FavoritesComponent } from './pages/favorites/favorites.component';
+import { ManageBookComponent } from './pages/manage-book/manage-book.component';
 
 
 @NgModule({
@@ -13,7 +15,9 @@ import { BookCardComponent } from './components/book-card/book-card.component';
     MainComponent,
     MenuComponent,
     BookListComponent,
-    BookCardComponent
+    BookCardComponent,
+    FavoritesComponent,
+    ManageBookComponent
   ],
   imports: [
     CommonModule,
