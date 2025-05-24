@@ -24,6 +24,7 @@ public class BookMapper {
                 .title(book.getTitle())
                 .isbn(book.getIsbn())
                 .authors(book.getAuthors())
+                .categories(book.getCategories())
                 .description(book.getDescription())
                 .cover(FileUtils.readFileFromLocation(book.getBookCover()))
                 .available(book.isAvailable())

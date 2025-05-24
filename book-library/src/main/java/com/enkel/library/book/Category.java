@@ -13,6 +13,8 @@ public enum Category {
     HISTORICAL_FICTION,
     COMICS,
     GRAPHIC_NOVEL,
+    COMEDY,
+    HISTORICAL,
 
     // Biographies
     BIOGRAPHY,

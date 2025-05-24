@@ -6,10 +6,15 @@ import { Author } from '../models/author';
 export interface BookResponse {
   authors?: Array<Author>;
   available?: boolean;
-  categories?: Array<'FICTION' | 'NON_FICTION' | 'SCIENCE_FICTION' | 'FANTASY' | 'MYSTERY' | 'THRILLER' | 'ROMANCE' | 'HORROR' | 'HISTORICAL_FICTION' | 'COMICS' | 'GRAPHIC_NOVEL' | 'BIOGRAPHY' | 'AUTOBIOGRAPHY' | 'SELF_HELP' | 'BUSINESS' | 'COOKING' | 'ART' | 'TRAVEL' | 'HISTORY' | 'SCIENCE' | 'POETRY' | 'DRAMA' | 'ACADEMIC' | 'REFERENCE' | 'CHILDREN' | 'YOUNG_ADULT' | 'MATURE_AUDIENCE'>;
+  categories?: Array<string | Category>;
   cover?: string;
   description?: string;
   id?: number;
   isbn?: string;
   title?: string;
+}
+
+export interface Category {
+  id?: number;
+  name?: string;
 }

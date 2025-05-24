@@ -46,12 +46,22 @@ export class BookCardComponent {
       .join(', ');
   }
 
+  get categoryDisplayNames(): string{
+    if(!this.book || !this.book.categories || this.book.categories.length == 0){
+      return '';
+    }
+    return (this.book.categories as string[])
+      .filter((categoryName: string) => categoryName && categoryName.length > 0)
+      .join(' ');
+  }
+
   @Output() private details: EventEmitter<BookResponse> = new EventEmitter<BookResponse>();
   @Output() private borrow: EventEmitter<BookResponse> = new EventEmitter<BookResponse>();
   @Output() private addToFavourites: EventEmitter<BookResponse> = new EventEmitter<BookResponse>();
   @Output() private edit: EventEmitter<BookResponse> = new EventEmitter<BookResponse>();
   @Output() private share: EventEmitter<BookResponse> = new EventEmitter<BookResponse>();
   @Output() private delete: EventEmitter<BookResponse> = new EventEmitter<BookResponse>();
+  @Output() private categoryClick: EventEmitter<string> = new EventEmitter<string>();
   
 
   onShowDetails() {
@@ -77,4 +87,8 @@ export class BookCardComponent {
   onDelete() {
     this.delete.emit(this._book);
   }
+
+  // onCategoryClicked() {
+  //   this.categoryClick.emit();
+  // }
 }

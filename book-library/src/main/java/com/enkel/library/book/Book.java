@@ -47,7 +47,7 @@ public class Book extends BaseEntity {
     @CollectionTable(name = "book_categories", joinColumns = @JoinColumn(name = "book_id"))
     @Enumerated(EnumType.STRING)
     private Set<Category> categories = new HashSet<>();
-
+    
     @ManyToMany(mappedBy = "favouriteBooks", fetch = FetchType.LAZY)
     private Set<User> favouritedByUsers = new HashSet<>();
 
