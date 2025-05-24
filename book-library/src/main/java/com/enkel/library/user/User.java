@@ -3,6 +3,8 @@ package com.enkel.library.user;
 import com.enkel.library.book.Book;
 import com.enkel.library.history.BookRentingHistory;
 import com.enkel.library.role.Role;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -28,6 +30,7 @@ import java.util.stream.Collectors;
 @Entity
 @Table(name = "users")
 @EntityListeners(AuditingEntityListener.class)
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class User implements UserDetails, Principal {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -5,6 +5,9 @@ import com.enkel.library.common.BaseEntity;
 import com.enkel.library.history.BookRentingHistory;
 import com.enkel.library.user.User;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -20,6 +23,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Entity
 @Table(name = "books")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Book extends BaseEntity {
     @Column(nullable = false)
     private String title;
@@ -40,7 +44,6 @@ public class Book extends BaseEntity {
             joinColumns = @JoinColumn(name = "book_id"),
             inverseJoinColumns = @JoinColumn(name = "author_id")
     )
-    @JsonBackReference
     private Set<Author> authors = new HashSet<>();
 
     @ElementCollection(targetClass = Category.class, fetch = FetchType.LAZY)
@@ -52,5 +55,6 @@ public class Book extends BaseEntity {
     private Set<User> favouritedByUsers = new HashSet<>();
 
     @OneToMany(mappedBy = "book")
+
     private List<BookRentingHistory> histories;
 }

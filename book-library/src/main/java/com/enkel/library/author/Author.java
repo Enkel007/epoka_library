@@ -1,7 +1,9 @@
 package com.enkel.library.author;
 
 import com.enkel.library.book.Book;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -15,6 +17,8 @@ import java.util.Set;
 @NoArgsConstructor
 @Entity
 @Table(name = "authors")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+
 public class Author {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,6 +32,5 @@ public class Author {
     private String lastName;
 
     @ManyToMany(mappedBy = "authors", fetch = FetchType.LAZY)
-    @JsonManagedReference
     private Set<Book> books = new HashSet<>();
 }

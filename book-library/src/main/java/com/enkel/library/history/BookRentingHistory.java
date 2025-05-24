@@ -3,6 +3,8 @@ package com.enkel.library.history;
 import com.enkel.library.book.Book;
 import com.enkel.library.common.BaseEntity;
 import com.enkel.library.user.User;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -14,6 +16,7 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class BookRentingHistory extends BaseEntity {
 
     @ManyToOne
