@@ -86,6 +86,24 @@ export class BookListComponent implements OnInit {
     });
   }
 
+  addToFavourites(book: BookResponse) {
+  this.message = '';
+  this.bookService.addBookToFavourites({
+    'book-id': book.id as number
+  }).subscribe({
+    next: () => {
+      this.level = 'success';
+      this.message = 'Book added to favorites successfully!';
+      // Refresh the favorites list
+    },
+    error: (err): void => {
+      console.log(err);
+      this.level = 'error';
+      this.message = err.error.error || 'Failed to add book to favorites';
+    }
+  });
+}
+
   editBook(book: BookResponse) {
     this.router.navigate(['books', 'manage', book.id]);
   }

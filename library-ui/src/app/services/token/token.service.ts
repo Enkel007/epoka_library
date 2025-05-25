@@ -5,6 +5,9 @@ import { JwtHelperService } from '@auth0/angular-jwt';
   providedIn: 'root'
 })
 export class TokenService {
+  private jwtHelper = new JwtHelperService();
+
+
   isTokenNotValid() {
     return !this.isTokenValid();
   }
@@ -32,4 +35,24 @@ export class TokenService {
   get token(){
     return localStorage.getItem('token') as string;
   }
+
+    public getUserRoles(): string[] {
+    const token = this.token;
+    // Ensure token exists and is valid before attempting to decode
+    if (token && this.isTokenValid()) {
+      try {
+        const decodedToken = this.jwtHelper.decodeToken(token);
+        // Based on your JwtService.java, roles are in the 'authorities' claim
+        if (decodedToken && decodedToken.authorities && Array.isArray(decodedToken.authorities)) {
+          return decodedToken.authorities;
+        }
+        return [];
+      } catch (error) {
+        console.error('Error decoding token:', error);
+        return [];
+      }
+    }
+    return [];
+  }
+
 }

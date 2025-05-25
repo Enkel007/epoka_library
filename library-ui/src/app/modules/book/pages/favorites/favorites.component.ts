@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { PageResponseBookResponse } from '../../../../services/models/page-response-book-response';
+import { PageResponseBookResponse as PageResponseFavoriteBookResponse} from '../../../../services/models/page-response-book-response';
 import { BookService } from '../../../../services/services/book.service';
 import { Router } from '@angular/router';
 import { BookResponse } from '../../../../services/models/book-response';
@@ -10,7 +10,7 @@ import { BookResponse } from '../../../../services/models/book-response';
   styleUrl: './favorites.component.scss'
 })
 export class FavoritesComponent implements OnInit{
-bookResponse: PageResponseBookResponse = {};
+  bookResponse: PageResponseFavoriteBookResponse = {};
   page = 0;
   size = 4;
   message = '';
@@ -31,8 +31,8 @@ bookResponse: PageResponseBookResponse = {};
       page: this.page,
       size: this.size
     }).subscribe({
-      next: (books) => {
-        this.bookResponse = books;
+      next: (response: PageResponseFavoriteBookResponse) => {
+        this.bookResponse = response;
       },
       error: (err) => {
         console.error('Error fetching favourite books:', err);

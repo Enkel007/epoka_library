@@ -1,5 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { BookResponse } from '../../../../services/models';
+import { AuthenticationService } from '../../../../services/services';
+import { TokenService } from '../../../../services/token/token.service';
 
 @Component({
   selector: 'app-book-card',
@@ -11,8 +13,21 @@ export class BookCardComponent {
   private _manage: boolean = false;
   private _bookCover: string | undefined;
 
+  constructor(
+    private authService: AuthenticationService, 
+    private tokenService: TokenService
+  ){}
+
   get book(): BookResponse {
     return this._book;
+  }
+
+  get userIsAdmin(): boolean {
+    const roles = this.tokenService.getUserRoles();
+    // Check if 'ADMIN' is one of the roles.
+    // This string must exactly match the role name stored in the JWT's 'authorities' claim.
+    return roles.includes('ADMIN');
+
   }
 
   @Input()
