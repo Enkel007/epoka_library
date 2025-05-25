@@ -9,6 +9,7 @@ import { BookCardComponent } from './components/book-card/book-card.component';
 import { FavoritesComponent } from './pages/favorites/favorites.component';
 import { ManageBookComponent } from './pages/manage-book/manage-book.component';
 import {FormsModule} from "@angular/forms";
+import { BorrowedBookListComponent } from './pages/borrowed-book-list/borrowed-book-list.component';
 
 
 @NgModule({
@@ -18,7 +19,8 @@ import {FormsModule} from "@angular/forms";
     BookListComponent,
     BookCardComponent,
     FavoritesComponent,
-    ManageBookComponent
+    ManageBookComponent,
+    BorrowedBookListComponent
   ],
     imports: [
         CommonModule,

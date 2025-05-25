@@ -4,7 +4,7 @@
 
 import { Author } from '../models/author';
 export interface BorrowedBookResponse {
-  authors?: Array<Author>;
+  author?: string;
   id?: number;
   isbn?: string;
   returnApproved?: boolean;
