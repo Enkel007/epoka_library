@@ -27,17 +27,16 @@ export class ReturnBooksComponent implements OnInit {
     })
   }
 
-  approveBookReturn(book: BorrowedBookResponse){
-    if(!book.returned){
-      this.level = 'error';
-      this.message = 'The book is not returned yet!';
+  approveBookReturn(book: BorrowedBookResponse) {
+    if (!book.returned) {
+      return;
     }
     this.bookService.approveReturnedBorrowedBook({
       'book-id': book.id as number
     }).subscribe({
       next: () => {
         this.level = 'success';
-        this.message = 'Book return approved!';
+        this.message = 'Book return approved';
         this.findAllReturnedBooks();
       }
     });

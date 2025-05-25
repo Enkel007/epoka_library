@@ -78,9 +78,17 @@ export class BookCardComponent {
     this.share.emit(this._book);
   }
 
-  onDelete() {
-    this.delete.emit(this._book);
+onDelete() {
+    // Show a confirmation dialog
+    const confirmation = confirm(`Are you sure you want to delete the book "${this._book.title}"?`);
+    if (confirmation) {
+      // If user confirms, emit the delete event
+      this.delete.emit(this._book);
+    }
+    // If the user cancels, nothing happens
   }
+
+  
 
   // onCategoryClicked() {
   //   this.categoryClick.emit();

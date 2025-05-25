@@ -78,8 +78,6 @@ export class ManageBookComponent implements OnInit { // Implement OnInit
   }
 
   saveBook(){
-    // Ensure categories are correctly formatted if your backend expects a Set or specific type
-    // For now, it's an array of strings, which should be compatible with Set<Category> on the backend.
     this.bookService.saveBook({
       body: this.bookRequest
     }).subscribe({

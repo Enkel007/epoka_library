@@ -31,8 +31,9 @@
                     </a>
                 </li>
             </ul>
-            <form class="d-flex gap-2 align-items-center" role="search">
-                <input class="form-control" type="text" placeholder="Search" aria-label="Search">
+            <form class="d-flex gap-2 align-items-center" role="search" (ngSubmit)="search()">
+                <input class="form-control" type="text" placeholder="Search by title, author, category or ISBN"
+                    [(ngModel)]="searchQuery" name="searchQuery">
                 <button class="btn btn-outline-success" type="submit">
                     <i class="fas fa-search"></i>
                 </button>

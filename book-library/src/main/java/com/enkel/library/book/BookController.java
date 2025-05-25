@@ -6,9 +6,12 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("books")
@@ -18,6 +21,7 @@ public class BookController {
     private final BookService service;
 
     @PostMapping
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<Integer> saveBook(@Valid @RequestBody BookRequest request, Authentication connectedUser) {
         return ResponseEntity.ok(service.save(request, connectedUser));
     }
@@ -28,6 +32,7 @@ public class BookController {
     }
 
     @DeleteMapping("{book-id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<BookResponse> deleteBook(@PathVariable("book-id") Integer bookId) {
         return ResponseEntity.ok(service.deleteById(bookId));
     }
@@ -114,12 +119,14 @@ public class BookController {
     }
 
     @PatchMapping("/borrow/return/approve/{book-id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<Integer> approveReturnedBorrowedBook(
             @PathVariable("book-id") Integer bookId, Authentication connectedUser) {
         return ResponseEntity.ok(service.approveReturnedBorrowedBook(bookId, connectedUser));
     }
 
     @PostMapping(value = "/cover/{book-id}", consumes = "multipart/form-data")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<?> uploadBookCoverPicture(
             @PathVariable ("book-id") Integer bookId,
             @Parameter()

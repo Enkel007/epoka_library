@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { BookService } from '../../../../services/services/book.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { BookResponse, PageResponseBookResponse } from '../../../../services/models';
 import { TokenService } from '../../../../services/token/token.service';
 
@@ -15,12 +15,14 @@ export class BookListComponent implements OnInit {
   size = 4;
   message = '';
   level = 'success';
+  searchQuery: string | null = null;
   
 
   constructor(
     private bookService: BookService,
     private router: Router,
-    private tokenService: TokenService
+    private tokenService: TokenService,
+    private activatedRoute: ActivatedRoute
   ){}
 
   get userIsAdmin(): boolean {
@@ -31,22 +33,44 @@ export class BookListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.findAllBooks();
+    this.activatedRoute.queryParams.subscribe(params => {
+      this.searchQuery = params['search'] || null;
+      this.page = 0; // Reset to first page for new searches
+      this.findAllBooks();
+    });
   }
   
   private findAllBooks() {
-    this.bookService.findAllBooks({
-      page: this.page,
-      size: this.size
-    }).subscribe({
-      next: (books) => {
-        this.bookResponse = books;
-      },
-      error: (err) => {
-        console.error('Error fetching books:', err);
-        // Handle error appropriately, e.g., show a notification or redirect
-      }
-    });
+    // If there's a search query, use search API, otherwise get all books
+    // if (this.searchQuery) {
+    //   this.bookService.searchBooks({
+    //     query: this.searchQuery,
+    //     page: this.page,
+    //     size: this.size
+    //   }).subscribe({
+    //     next: (response: PageResponseBookResponse) => {
+    //       this.bookResponse = response;
+    //     },
+    //     error: (err) => {
+    //       console.error('Error searching books:', err);
+    //       this.message = 'Error searching books. Please try again.';
+    //       this.level = 'error';
+    //     }
+    //   });
+    // } else {
+      // Original code to get all books
+      this.bookService.findAllBooks({
+        page: this.page,
+        size: this.size
+      }).subscribe({
+        next: (response: PageResponseBookResponse) => {
+          this.bookResponse = response;
+        },
+        error: (err) => {
+          console.error('Error fetching books:', err);
+        }
+      });
+    // }
   }
 
   goToFirstPage(){

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TokenService } from '../../../../services/token/token.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-menu',
@@ -7,8 +8,11 @@ import { TokenService } from '../../../../services/token/token.service';
   styleUrl: './menu.component.scss'
 })
 export class MenuComponent implements OnInit {
+  searchQuery: string = '';
+
   constructor(
-    private tokenService: TokenService
+    private tokenService: TokenService,
+    private router: Router
   ){}
 
   get userIsAdmin(): boolean {
@@ -29,6 +33,17 @@ export class MenuComponent implements OnInit {
         link.classList.add('active');
       })
     });
+  }
+
+  search(): void {
+    // if (this.searchQuery && this.searchQuery.trim() !== '') {
+    //   // Navigate to the search results page with the query as a parameter
+    //   this.router.navigate(['/books'], { 
+    //     queryParams: { 
+    //       search: this.searchQuery.trim() 
+    //     } 
+    //   });
+    // }
   }
 
   logout(){
