@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { BookService } from '../../../../services/services/book.service';
 import { Router } from '@angular/router';
 import { BookResponse, PageResponseBookResponse } from '../../../../services/models';
+import { TokenService } from '../../../../services/token/token.service';
 
 @Component({
   selector: 'app-book-list',
@@ -19,7 +20,15 @@ export class BookListComponent implements OnInit {
   constructor(
     private bookService: BookService,
     private router: Router,
+    private tokenService: TokenService
   ){}
+
+  get userIsAdmin(): boolean {
+    const roles = this.tokenService.getUserRoles();
+    // Check if 'ADMIN' is one of the roles.
+    // This string must exactly match the role name stored in the JWT's 'authorities' claim.
+    return roles.includes('ADMIN');
+  }
 
   ngOnInit(): void {
     this.findAllBooks();

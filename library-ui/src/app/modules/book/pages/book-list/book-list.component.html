@@ -9,7 +9,7 @@
 </div>
 <hr>
 <div class="d-flex justify-content-end mb-3">
-    <a routerLink="/books/manage" class="btn btn-outline-primary">
+    <a routerLink="/books/manage" class="btn btn-outline-primary" *ngIf="userIsAdmin">
         <i class="fas fa-plus"></i>&nbsp;New Book
     </a>
 </div>

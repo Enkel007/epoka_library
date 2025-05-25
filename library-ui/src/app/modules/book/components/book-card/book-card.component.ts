@@ -10,11 +10,9 @@ import { TokenService } from '../../../../services/token/token.service';
 })
 export class BookCardComponent {
   private _book: BookResponse = {};
-  private _manage: boolean = false;
   private _bookCover: string | undefined;
 
   constructor(
-    private authService: AuthenticationService, 
     private tokenService: TokenService
   ){}
 
@@ -33,15 +31,6 @@ export class BookCardComponent {
   @Input()
   set book(value: BookResponse) {
     this._book = value;
-  }
-
-  get manage(): boolean {
-    return this._manage;
-  }
-
-  @Input()
-  set manage(value: boolean){
-    this._manage = value;
   }
 
   get bookCover(): string | undefined {
